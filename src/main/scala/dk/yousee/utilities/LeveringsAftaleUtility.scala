@@ -2,7 +2,7 @@ package dk.yousee.utilities
 
 import dk.yousee.repository.{Properties, Produkt, ProduktRepo}
 import dk.yousee.roles.{Provisionering, BestilFraLager}
-import dk.yousee.abonnement.{Periode, LeveringsAftale}
+import dk.yousee.model.{Periode, LeveringsAftale}
 import java.util.Date
 import collection.mutable.Map
 /**
