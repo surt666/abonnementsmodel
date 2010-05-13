@@ -1,4 +1,4 @@
-package dk.yousee.abonnement
+package dk.yousee.model
 
 import java.util.Date
 
