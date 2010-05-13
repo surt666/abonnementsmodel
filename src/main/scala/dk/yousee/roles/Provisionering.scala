@@ -11,15 +11,15 @@ import java.util.Date
  */
 
 trait Provisionering {
-  def provisionerSigma(provNum : String) : Unit = {
-    println("SIGMA " + provNum)
-    val event = ProvisioneringsEvent("Sigma",provNum, new Date)
+  def provisionerSigma(provNum : String, date : Date) : Unit = {
+    println("SIGMA " + provNum + "|" + date)
+    val event = ProvisioneringsEvent("Sigma",provNum, date)
     queueEvent(event)
   }
 
-  def provisionerStalone(provNum : String) : Unit = {
-    println("Stalone " + provNum)
-    val event = ProvisioneringsEvent("Stalone",provNum, new Date)
+  def provisionerStalone(provNum : String, date : Date) : Unit = {
+    println("Stalone " + provNum + "|" + date)
+    val event = ProvisioneringsEvent("Stalone",provNum, date)
     queueEvent(event)
   }
 

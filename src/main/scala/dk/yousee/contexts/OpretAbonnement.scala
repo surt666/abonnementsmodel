@@ -18,5 +18,6 @@ class OpretAbonnement(abonId : Int, juridisk : Int, betaler : Int, forbruger : I
   val leveringsAftaler = LeveringsAftaleUtility.findAlleLeveringsAftaler(produkt,abonId,betaler,forbruger)
   val faktureringsPeriode = new Periode(new Date,new Date) //todo beregn
   val abonnement = new Abonnement(abonId,juridisk,faktureringsPeriode,leveringsAftaler,produkt.pris, 0.0)
+  leveringsAftaler.foreach(l => l.persist)
   abonnement.persist
 }

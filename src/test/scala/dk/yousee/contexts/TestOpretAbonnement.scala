@@ -1,7 +1,7 @@
 package dk.yousee.contexts
 
 import org.scalatest.FlatSpec
-import dk.yousee.repository.ProduktRepo
+import org.scalatest.matchers.ShouldMatchers
 
 /**
  * Created by IntelliJ IDEA.
@@ -10,7 +10,7 @@ import dk.yousee.repository.ProduktRepo
  * Time: 12:51:43 PM
  */
 
-class TestOpretAbonnement extends FlatSpec with org.scalatest.matchers.ShouldMatchers {
+class TestOpretAbonnement extends FlatSpec with ShouldMatchers {
 
   "Create YouSee Plus subscription" should "create 3 deliveries and 1 subscription" in {
     val abon = new OpretAbonnement(1,123,234,456,1203101)

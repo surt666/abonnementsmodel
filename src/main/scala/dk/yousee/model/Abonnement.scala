@@ -9,7 +9,6 @@ package dk.yousee.model
 
 class Abonnement(val id : Int, val juridisk : Int, val faktureringsPeriode : Periode, val leveringer : List[LeveringsAftale], val pris : Double, val rabat : Double)  {
   def persist {
-    leveringer.foreach(l => l.persist)
     //todo kald repository
     println("Persister Abonnement " + id)
   }

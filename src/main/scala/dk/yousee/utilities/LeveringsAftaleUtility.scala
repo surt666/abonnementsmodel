@@ -13,21 +13,21 @@ import collection.mutable.Map
  */
 
 object LeveringsAftaleUtility {
-  def opretLeveringsAftale(abonId : Int, betaler : Int, forbruger : Int, produktId : Int, provisioneringsSystem : String, provisioneringsNummer : String, logistikNummer : String, leveringsPeriode : Periode, properties : scala.collection.mutable.Map[String,String]) : LeveringsAftale = {
+  def opretLeveringsAftale(abonId : Int, betaler : Int, forbruger : Int, produktId : Int, provisioneringsSystem : String, provisioneringsNummer : String, logistikNummer : String, leveringsPeriode : Periode, properties : Map[Properties.Value,String]) : LeveringsAftale = {
     if (provisioneringsSystem != "" && logistikNummer != "") {
       var l = new LeveringsAftale(abonId,produktId,leveringsPeriode, forbruger, betaler, properties) with Provisionering with BestilFraLager
       l.bestilFraIRIS(logistikNummer)
       provisioneringsSystem match {
-        case "Stalone" => l.provisionerStalone(provisioneringsNummer)
-        case "Sigma" => l.provisionerSigma(provisioneringsNummer)
+        case "Stalone" => l.provisionerStalone(provisioneringsNummer,new Date)
+        case "Sigma" => l.provisionerSigma(provisioneringsNummer,new Date)
         case _ =>
       }
       l
     } else if (provisioneringsSystem != "" && logistikNummer == "") {
       val l = new LeveringsAftale(abonId,produktId,leveringsPeriode, forbruger, betaler, properties) with Provisionering
       provisioneringsSystem match {
-        case "Stalone" => l.provisionerStalone(provisioneringsNummer)
-        case "Sigma" => l.provisionerSigma(provisioneringsNummer)
+        case "Stalone" => l.provisionerStalone(provisioneringsNummer,new Date)
+        case "Sigma" => l.provisionerSigma(provisioneringsNummer,new Date)
         case _ =>
       }
       l
@@ -42,7 +42,7 @@ object LeveringsAftaleUtility {
 
   def findAlleLeveringsAftaler(p : Produkt,abonId : Int, betaler : Int, forbruger : Int) : List[LeveringsAftale] = {
     val leveringsPeriode = new Periode(new Date,new Date) //todo beregn
-    val properties = new scala.collection.mutable.HashMap[String,String]
+    val properties = Map[Properties.Value,String]()
     var leveringsAftaler = List[LeveringsAftale]()
 
     for (bpId <- findAlleBundleProdukter(p)) {
@@ -80,5 +80,9 @@ object LeveringsAftaleUtility {
       Some(properties(property))
     else
       None
+  }
+
+  def cloneWithProvisonering(l : LeveringsAftale) : LeveringsAftale with Provisionering = {
+    new LeveringsAftale(l.abonnementId,l.produktId,l.leveringsPeriode,l.forbruger,l.betaler,l.properties) with Provisionering
   }
 }
