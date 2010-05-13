@@ -1,5 +1,7 @@
 package dk.yousee.events
 
+import java.util.Date
+
 /**
  * Created by IntelliJ IDEA.
  * User: sla
@@ -7,4 +9,5 @@ package dk.yousee.events
  * Time: 6:48:36 PM
  */
 
-class PrisEvent
+case class PrisEvent(val pris : Double, val abonId : Int, val date : Date)
+        

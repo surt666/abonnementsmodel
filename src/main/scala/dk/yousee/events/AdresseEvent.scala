@@ -1,5 +1,7 @@
 package dk.yousee.events
 
+import java.util.Date
+
 /**
  * Created by IntelliJ IDEA.
  * User: sla
@@ -7,4 +9,4 @@ package dk.yousee.events
  * Time: 6:49:25 PM
  */
 
-class AdresseEvent
+class AdresseEvent(val adresseId : String, val abonId : Int, val date : Date)
