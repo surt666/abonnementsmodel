@@ -1,9 +1,8 @@
 package dk.yousee.contexts
 
 import java.util.Date
-import dk.yousee.abonnement.{Abonnement, Periode, LeveringsAftale}
-import dk.yousee.roles.{BestilFraLager, Provisionering}
-import dk.yousee.repository.{Properties, Produkt, ProduktRepo}
+import dk.yousee.abonnement.{Abonnement, Periode}
+import dk.yousee.repository.{ProduktRepo}
 import dk.yousee.utilities.LeveringsAftaleUtility
 
 /**
