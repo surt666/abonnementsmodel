@@ -19,6 +19,4 @@ class OpretAbonnement(abonId : Int, juridisk : Int, betaler : Int, forbruger : I
   val faktureringsPeriode = new Periode(new Date,new Date) //todo beregn
   val abonnement = new Abonnement(abonId,juridisk,faktureringsPeriode,leveringsAftaler,produkt.pris, 0.0)
   abonnement.persist
-
-  
 }
