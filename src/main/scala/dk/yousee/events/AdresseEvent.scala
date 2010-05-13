@@ -7,4 +7,4 @@ package dk.yousee.events
  * Time: 6:49:25 PM
  */
 
-class Adresse
+class AdresseEvent
