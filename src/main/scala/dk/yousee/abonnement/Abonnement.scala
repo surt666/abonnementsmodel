@@ -11,5 +11,6 @@ class Abonnement(val id : Int, val juridisk : Int, val faktureringsPeriode : Per
   def persist {
     leveringer.foreach(l => l.persist)
     //todo kald repository
+    println("Persister Abonnement " + id)
   }
 }

@@ -8,8 +8,12 @@ package dk.yousee.roles
  */
 
 trait Provisionering {
-  def provisionerSigma : Unit = {}
+  def provisionerSigma : Unit = {
+    println("SIGMA")
+  }
 
-  def provisionerStalone : Unit = {}
+  def provisionerStalone : Unit = {
+    println("Stalone")
+  }
  
 }

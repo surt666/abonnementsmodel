@@ -8,5 +8,7 @@ package dk.yousee.roles
  */
 
 trait BestilFraLager {
-  def bestilFraIRIS : Unit = {}
+  def bestilFraIRIS : Unit = {
+    println("IRIS")
+  }
 }

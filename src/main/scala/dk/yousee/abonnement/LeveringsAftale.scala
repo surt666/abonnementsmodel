@@ -10,5 +10,6 @@ package dk.yousee.abonnement
 class LeveringsAftale(val abonnementId : Int, val produktId : Int, leveringsPeriode : Periode, val forbruger : Int, val betaler : Int, val properties : scala.collection.mutable.Map[String,String]) {
   def persist {
     //todo kald repository
+    println("Persister LeveringsAftale for " + produktId)
   }
 }
