@@ -11,9 +11,16 @@ import org.scalatest.FlatSpec
 
 class TestOpretAbonnement extends FlatSpec with org.scalatest.matchers.ShouldMatchers {
 
-  "Opret abonnement" should "oprette leveringsaftaler og abonnement" in {
+  "Opret YouSee Plus abonnement" should "oprette leveringsaftaler og abonnement" in {
     val abon = new OpretAbonnement(1,123,234,456,1203101)
     abon.abonnement.id should equal (1)
+    abon.abonnement.leveringer.length should equal (3)
+  }
+
+  "Opret YouSee Silver abonnement" should "oprette leveringsaftaler og abonnement" in {
+    val abon = new OpretAbonnement(2,123,234,456,1701001)
+    abon.abonnement.id should equal (2)
+    abon.abonnement.leveringer.length should equal (4)
   }
   
 }

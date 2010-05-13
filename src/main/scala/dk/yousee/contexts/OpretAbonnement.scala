@@ -21,17 +21,17 @@ class OpretAbonnement(abonId : Int, juridisk : Int, betaler : Int, forbruger : I
   val abonnement = new Abonnement(abonId,juridisk,faktureringsPeriode,leveringsAftaler,produkt.pris, 0.0)
   abonnement.persist
 
-  private def opretLeveringsAftale(abonId : Int, betaler : Int, forbruger : Int, produktId : Int, provisioneringsSystem : String, provisioneringsNummer : String, bestilFraLager : Boolean, leveringsPeriode : Periode, properties : scala.collection.mutable.Map[String,String]) : LeveringsAftale = {
-    if (provisioneringsSystem != "" && bestilFraLager) {
+  private def opretLeveringsAftale(abonId : Int, betaler : Int, forbruger : Int, produktId : Int, provisioneringsSystem : String, provisioneringsNummer : String, logistikNummer : String, leveringsPeriode : Periode, properties : scala.collection.mutable.Map[String,String]) : LeveringsAftale = {
+    if (provisioneringsSystem != "" && logistikNummer != "") {
       var l = new LeveringsAftale(abonId,produktId,leveringsPeriode, forbruger, betaler, properties) with Provisionering with BestilFraLager
-      l.bestilFraIRIS
+      l.bestilFraIRIS(logistikNummer)
       provisioneringsSystem match {
         case "Stalone" => l.provisionerStalone(provisioneringsNummer)
         case "Sigma" => l.provisionerSigma(provisioneringsNummer)
         case _ =>
       }
       l
-    } else if (provisioneringsSystem != "" && !bestilFraLager) {
+    } else if (provisioneringsSystem != "" && logistikNummer == "") {
       val l = new LeveringsAftale(abonId,produktId,leveringsPeriode, forbruger, betaler, properties) with Provisionering
       provisioneringsSystem match {
         case "Stalone" => l.provisionerStalone(provisioneringsNummer)
@@ -39,9 +39,9 @@ class OpretAbonnement(abonId : Int, juridisk : Int, betaler : Int, forbruger : I
         case _ =>
       }
       l
-    } else if (provisioneringsSystem == "" && bestilFraLager) {
+    } else if (provisioneringsSystem == "" && logistikNummer != "") {
       val l = new LeveringsAftale(abonId,produktId,leveringsPeriode, forbruger, betaler, properties) with BestilFraLager
-      l.bestilFraIRIS
+      l.bestilFraIRIS(logistikNummer)
       l
     } else {
       new LeveringsAftale(abonId,produktId,leveringsPeriode, forbruger, betaler, properties)
@@ -51,7 +51,6 @@ class OpretAbonnement(abonId : Int, juridisk : Int, betaler : Int, forbruger : I
   private def findAlleLeveringsAftaler(p : Produkt,abonId : Int, betaler : Int, forbruger : Int) : List[LeveringsAftale] = {
     val leveringsPeriode = new Periode(new Date,new Date) //todo beregn
     val properties = new scala.collection.mutable.HashMap[String,String]
-    val bestilFraLager = true //todo find ud af om hardware skal bestilles
     var leveringsAftaler = List[LeveringsAftale]()
 
     if (p.bundleProducts != Nil) {
@@ -60,19 +59,21 @@ class OpretAbonnement(abonId : Int, juridisk : Int, betaler : Int, forbruger : I
         val bp = ProduktRepo.findProdukt(bpId)
         val provisioneringsSystem = findProperty(bp.properties,Properties.ProvSystem)
         val provisioneringsNummer = findProperty(bp.properties,Properties.ProvNum)
-        leveringsAftaler = opretLeveringsAftale(abonId,betaler,forbruger,bp.id,provisioneringsSystem,provisioneringsNummer,bestilFraLager,leveringsPeriode,properties) :: leveringsAftaler
+        val logistikNummer = findProperty(bp.properties,Properties.LogistikNum)
+        leveringsAftaler = opretLeveringsAftale(abonId,betaler,forbruger,bp.id,provisioneringsSystem.getOrElse(""),provisioneringsNummer.getOrElse(""),logistikNummer.getOrElse(""),leveringsPeriode,properties) :: leveringsAftaler
       }
     }
     val provisioneringsSystem = findProperty(p.properties,Properties.ProvSystem)
     val provisioneringsNummer = findProperty(p.properties,Properties.ProvNum)
-    leveringsAftaler = opretLeveringsAftale(abonId,betaler,forbruger,p.id,provisioneringsSystem,provisioneringsNummer,bestilFraLager,leveringsPeriode,properties) :: leveringsAftaler
+    val logistikNummer = findProperty(p.properties,Properties.LogistikNum)
+    leveringsAftaler = opretLeveringsAftale(abonId,betaler,forbruger,p.id,provisioneringsSystem.getOrElse(""),provisioneringsNummer.getOrElse(""),logistikNummer.getOrElse(""),leveringsPeriode,properties) :: leveringsAftaler
     leveringsAftaler
   }
 
-  private def findProperty(properties : Map[Properties.Value,String], property : Properties.Value) : String = {
+  private def findProperty(properties : Map[Properties.Value,String], property : Properties.Value) : Option[String] = {
     if (properties != null && properties.keySet.contains(property))
-      properties(property)
+      Some(properties(property))
     else
-      null
+      None
   }
 }
