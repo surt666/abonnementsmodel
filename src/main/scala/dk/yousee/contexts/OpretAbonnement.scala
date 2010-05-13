@@ -53,21 +53,34 @@ class OpretAbonnement(abonId : Int, juridisk : Int, betaler : Int, forbruger : I
     val properties = new scala.collection.mutable.HashMap[String,String]
     var leveringsAftaler = List[LeveringsAftale]()
 
-    if (p.bundleProducts != Nil) {
-      //we got a bundle
-      for (bpId <- p.bundleProducts) {
-        val bp = ProduktRepo.findProdukt(bpId)
-        val provisioneringsSystem = findProperty(bp.properties,Properties.ProvSystem)
-        val provisioneringsNummer = findProperty(bp.properties,Properties.ProvNum)
-        val logistikNummer = findProperty(bp.properties,Properties.LogistikNum)
-        leveringsAftaler = opretLeveringsAftale(abonId,betaler,forbruger,bp.id,provisioneringsSystem.getOrElse(""),provisioneringsNummer.getOrElse(""),logistikNummer.getOrElse(""),leveringsPeriode,properties) :: leveringsAftaler
-      }
+    for (bpId <- findAlleBundleProdukter(p)) {
+      val bp = ProduktRepo.findProdukt(bpId)
+      val provisioneringsSystem = findProperty(bp.properties,Properties.ProvSystem)
+      val provisioneringsNummer = findProperty(bp.properties,Properties.ProvNum)
+      val logistikNummer = findProperty(bp.properties,Properties.LogistikNum)
+      leveringsAftaler = opretLeveringsAftale(abonId,betaler,forbruger,bp.id,provisioneringsSystem.getOrElse(""),provisioneringsNummer.getOrElse(""),logistikNummer.getOrElse(""),leveringsPeriode,properties) :: leveringsAftaler
     }
     val provisioneringsSystem = findProperty(p.properties,Properties.ProvSystem)
     val provisioneringsNummer = findProperty(p.properties,Properties.ProvNum)
     val logistikNummer = findProperty(p.properties,Properties.LogistikNum)
     leveringsAftaler = opretLeveringsAftale(abonId,betaler,forbruger,p.id,provisioneringsSystem.getOrElse(""),provisioneringsNummer.getOrElse(""),logistikNummer.getOrElse(""),leveringsPeriode,properties) :: leveringsAftaler
     leveringsAftaler
+  }
+
+  def findAlleBundleProdukter(p : Produkt) : List[Int] = {
+    var bpsAll = List[Int]()
+    def addBp(bl : List[Int], bps : List[Int]) {
+      for (bpId <- bl) {
+        val bp = ProduktRepo.findProdukt(bpId)
+        if (bp.bundleProducts == Nil) {
+          bpsAll = bpId :: bpsAll
+        } else {
+          addBp(bp.bundleProducts,bpsAll)
+        }
+      }
+    }
+    addBp(p.bundleProducts,bpsAll)
+    bpsAll
   }
 
   private def findProperty(properties : Map[Properties.Value,String], property : Properties.Value) : Option[String] = {

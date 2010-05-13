@@ -1,6 +1,7 @@
 package dk.yousee.contexts
 
 import org.scalatest.FlatSpec
+import dk.yousee.repository.ProduktRepo
 
 /**
  * Created by IntelliJ IDEA.
@@ -11,16 +12,17 @@ import org.scalatest.FlatSpec
 
 class TestOpretAbonnement extends FlatSpec with org.scalatest.matchers.ShouldMatchers {
 
-  "Opret YouSee Plus abonnement" should "oprette leveringsaftaler og abonnement" in {
+  "Create YouSee Plus subscription" should "create 3 deliveries and 1 subscription" in {
     val abon = new OpretAbonnement(1,123,234,456,1203101)
     abon.abonnement.id should equal (1)
     abon.abonnement.leveringer.length should equal (3)
   }
 
-  "Opret YouSee Silver abonnement" should "oprette leveringsaftaler og abonnement" in {
+  "Create YouSee Silver subscription" should "create 5 deliveries and 1 subscription" in {
     val abon = new OpretAbonnement(2,123,234,456,1701001)
     abon.abonnement.id should equal (2)
-    abon.abonnement.leveringer.length should equal (4)
+    abon.abonnement.leveringer.length should equal (5)
+    val liste = abon.findAlleBundleProdukter(ProduktRepo.findProdukt(1701001))
+    println("Liste " + liste)
   }
-  
 }
