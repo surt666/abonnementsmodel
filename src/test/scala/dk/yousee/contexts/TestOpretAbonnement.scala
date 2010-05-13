@@ -22,7 +22,5 @@ class TestOpretAbonnement extends FlatSpec with org.scalatest.matchers.ShouldMat
     val abon = new OpretAbonnement(2,123,234,456,1701001)
     abon.abonnement.id should equal (2)
     abon.abonnement.leveringer.length should equal (5)
-    val liste = abon.findAlleBundleProdukter(ProduktRepo.findProdukt(1701001))
-    println("Liste " + liste)
   }
 }
