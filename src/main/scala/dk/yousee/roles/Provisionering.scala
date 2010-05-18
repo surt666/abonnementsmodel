@@ -2,6 +2,7 @@ package dk.yousee.roles
 
 import dk.yousee.events.ProvisioneringsEvent
 import java.util.Date
+import dk.yousee.model.LeveringsAftale
 
 /**
  * Created by IntelliJ IDEA.
@@ -11,6 +12,9 @@ import java.util.Date
  */
 
 trait Provisionering {
+  
+  this : LeveringsAftale =>
+  
   def provisionerSigma(provNum : String, date : Date) : Unit = {
     println("SIGMA " + provNum + "|" + date)
     val event = ProvisioneringsEvent("Sigma",provNum, date)

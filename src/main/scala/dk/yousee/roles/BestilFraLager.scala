@@ -1,5 +1,7 @@
 package dk.yousee.roles
 
+import dk.yousee.model.LeveringsAftale
+
 /**
  * Created by IntelliJ IDEA.
  * User: sla
@@ -8,6 +10,9 @@ package dk.yousee.roles
  */
 
 trait BestilFraLager {
+  
+  this : LeveringsAftale =>
+
   def bestilFraIRIS(logistikNummer : String) : Unit = {
     println("IRIS " + logistikNummer)
   }
