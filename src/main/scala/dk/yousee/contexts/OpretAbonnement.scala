@@ -1,9 +1,9 @@
 package dk.yousee.contexts
 
 import java.util.Date
-import dk.yousee.model.{Abonnement, Periode}
 import dk.yousee.repository.{ProduktRepo}
 import dk.yousee.utilities.LeveringsAftaleUtility
+import dk.yousee.model.{BetalingsAftale, Abonnement, Periode}
 
 /**
  * Created by IntelliJ IDEA.
@@ -15,9 +15,9 @@ import dk.yousee.utilities.LeveringsAftaleUtility
 class OpretAbonnement(abonId : Int, juridisk : Int, betaler : Int, forbruger : Int, produktId : Int) {
   //find ud af om produkt er bundle og opret tilsvarende Leverings aftaler
   val produkt = ProduktRepo.findProdukt(produktId)
-  val leveringsAftaler = LeveringsAftaleUtility.findAlleLeveringsAftaler(produkt,abonId,betaler,forbruger)
+  val leveringsAftaler = LeveringsAftaleUtility.findAlleLeveringsAftaler(produkt,abonId,forbruger)
   val faktureringsPeriode = new Periode(new Date,new Date) //todo beregn
-  val abonnement = new Abonnement(abonId,juridisk,faktureringsPeriode,leveringsAftaler,produkt.pris, 0.0)
+  val abonnement = new Abonnement(abonId,juridisk,leveringsAftaler,List[BetalingsAftale]())
   leveringsAftaler.foreach(l => l.persist)
   abonnement.persist
 }

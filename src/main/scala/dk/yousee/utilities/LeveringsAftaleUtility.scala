@@ -13,9 +13,9 @@ import collection.mutable.Map
  */
 
 object LeveringsAftaleUtility {
-  def opretLeveringsAftale(abonId : Int, betaler : Int, forbruger : Int, produktId : Int, provisioneringsSystem : String, provisioneringsNummer : String, logistikNummer : String, leveringsPeriode : Periode, properties : Map[Properties.Value,String]) : LeveringsAftale = {
+  def opretLeveringsAftale(abonId : Int, forbruger : Int, produktId : Int, provisioneringsSystem : String, provisioneringsNummer : String, logistikNummer : String, leveringsPeriode : Periode, properties : Map[Properties.Value,String]) : LeveringsAftale = {
     if (provisioneringsSystem != "" && logistikNummer != "") {
-      var l = new LeveringsAftale(abonId,produktId,leveringsPeriode, forbruger, betaler, properties) with Provisionering with BestilFraLager
+      var l = new LeveringsAftale(abonId,produktId,leveringsPeriode, forbruger, properties) with Provisionering with BestilFraLager
       l.bestilFraIRIS(logistikNummer)
       provisioneringsSystem match {
         case "Stalone" => l.provisionerStalone(provisioneringsNummer,new Date)
@@ -24,7 +24,7 @@ object LeveringsAftaleUtility {
       }
       l
     } else if (provisioneringsSystem != "" && logistikNummer == "") {
-      val l = new LeveringsAftale(abonId,produktId,leveringsPeriode, forbruger, betaler, properties) with Provisionering
+      val l = new LeveringsAftale(abonId,produktId,leveringsPeriode, forbruger, properties) with Provisionering
       provisioneringsSystem match {
         case "Stalone" => l.provisionerStalone(provisioneringsNummer,new Date)
         case "Sigma" => l.provisionerSigma(provisioneringsNummer,new Date)
@@ -32,15 +32,15 @@ object LeveringsAftaleUtility {
       }
       l
     } else if (provisioneringsSystem == "" && logistikNummer != "") {
-      val l = new LeveringsAftale(abonId,produktId,leveringsPeriode, forbruger, betaler, properties) with BestilFraLager
+      val l = new LeveringsAftale(abonId,produktId,leveringsPeriode, forbruger, properties) with BestilFraLager
       l.bestilFraIRIS(logistikNummer)
       l
     } else {
-      new LeveringsAftale(abonId,produktId,leveringsPeriode, forbruger, betaler, properties)
+      new LeveringsAftale(abonId,produktId,leveringsPeriode, forbruger, properties)
     }
   }
 
-  def findAlleLeveringsAftaler(p : Produkt,abonId : Int, betaler : Int, forbruger : Int) : List[LeveringsAftale] = {
+  def findAlleLeveringsAftaler(p : Produkt,abonId : Int, forbruger : Int) : List[LeveringsAftale] = {
     val leveringsPeriode = new Periode(new Date,new Date) //todo beregn
     val properties = Map[Properties.Value,String]()
     var leveringsAftaler = List[LeveringsAftale]()
@@ -50,12 +50,12 @@ object LeveringsAftaleUtility {
       val provisioneringsSystem = findProperty(bp.properties,Properties.ProvSystem)
       val provisioneringsNummer = findProperty(bp.properties,Properties.ProvNum)
       val logistikNummer = findProperty(bp.properties,Properties.LogistikNum)
-      leveringsAftaler = opretLeveringsAftale(abonId,betaler,forbruger,bp.id,provisioneringsSystem.getOrElse(""),provisioneringsNummer.getOrElse(""),logistikNummer.getOrElse(""),leveringsPeriode,properties) :: leveringsAftaler
+      leveringsAftaler = opretLeveringsAftale(abonId,forbruger,bp.id,provisioneringsSystem.getOrElse(""),provisioneringsNummer.getOrElse(""),logistikNummer.getOrElse(""),leveringsPeriode,properties) :: leveringsAftaler
     }
     val provisioneringsSystem = findProperty(p.properties,Properties.ProvSystem)
     val provisioneringsNummer = findProperty(p.properties,Properties.ProvNum)
     val logistikNummer = findProperty(p.properties,Properties.LogistikNum)
-    leveringsAftaler = opretLeveringsAftale(abonId,betaler,forbruger,p.id,provisioneringsSystem.getOrElse(""),provisioneringsNummer.getOrElse(""),logistikNummer.getOrElse(""),leveringsPeriode,properties) :: leveringsAftaler
+    leveringsAftaler = opretLeveringsAftale(abonId,forbruger,p.id,provisioneringsSystem.getOrElse(""),provisioneringsNummer.getOrElse(""),logistikNummer.getOrElse(""),leveringsPeriode,properties) :: leveringsAftaler
     leveringsAftaler
   }
 
@@ -83,6 +83,6 @@ object LeveringsAftaleUtility {
   }
 
   def cloneWithProvisonering(l : LeveringsAftale) : LeveringsAftale with Provisionering = {
-    new LeveringsAftale(l.abonnementId,l.produktId,l.leveringsPeriode,l.forbruger,l.betaler,l.properties) with Provisionering
+    new LeveringsAftale(l.abonnementId,l.produktId,l.leveringsPeriode,l.forbruger,l.properties) with Provisionering
   }
 }

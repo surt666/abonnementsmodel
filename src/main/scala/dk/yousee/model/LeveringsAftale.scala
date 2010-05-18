@@ -7,8 +7,9 @@ package dk.yousee.model
  * Time: 6:34:00 PM
  */
 import scala.collection.mutable.Map
+import dk.yousee.repository.Properties
 
-class LeveringsAftale(val abonnementId : Int, val produktId : Int, val leveringsPeriode : Periode, val forbruger : Int, val betaler : Int, val properties : Map[dk.yousee.repository.Properties.Value,String]) {
+class LeveringsAftale(val abonnementId : Int, val produktId : Int, val leveringsPeriode : Periode, val forbruger : Int, val properties : Map[Properties.Value,String]) {
   def persist {
     //todo kald repository
     println("Persister LeveringsAftale for " + produktId)

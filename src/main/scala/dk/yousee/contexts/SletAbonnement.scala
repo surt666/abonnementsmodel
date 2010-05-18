@@ -1,9 +1,9 @@
 package dk.yousee.contexts
 
 import java.util.Date
-import dk.yousee.model.{LeveringsAftale, Periode, Abonnement}
 import dk.yousee.repository.Properties
 import dk.yousee.utilities.LeveringsAftaleUtility
+import dk.yousee.model.{BetalingsAftale, LeveringsAftale, Periode, Abonnement}
 
 /**
  * Created by IntelliJ IDEA.
@@ -14,11 +14,11 @@ import dk.yousee.utilities.LeveringsAftaleUtility
 
 class SletAbonnement(val abonId : Int, val date : Date) {
   //todo find abonnement for abonid via Repository
-  val abon = new Abonnement(3,123,new Periode(new Date,new Date),List[LeveringsAftale](),100,0)
-  val faktururingsPeriode = new Periode(abon.faktureringsPeriode.fra,date)
-  val abon2 = new Abonnement(abon.id,abon.juridisk,faktururingsPeriode,abon.leveringer,abon.pris,abon.rabat)
+  val abon = new Abonnement(3,123,List[LeveringsAftale](),List[BetalingsAftale]())
+  //val faktururingsPeriode = new Periode(abon.faktureringsPeriode.fra,date)
+  val abon2 = new Abonnement(abon.id,abon.juridisk,abon.leveringsAftaler,abon.betalingsAftaler)
   abon2.persist
-  for (l <- abon2.leveringer) {
+  for (l <- abon2.leveringsAftaler) {
     if (l.properties.keySet.contains(Properties.ProvNum)) {
       val la = LeveringsAftaleUtility.cloneWithProvisonering(l)
       l.properties(Properties.ProvSystem) match {
