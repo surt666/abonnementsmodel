@@ -41,7 +41,7 @@ object LeveringsAftaleUtility {
   }
 
   def findAlleLeveringsAftaler(p : Produkt,abonId : Int, forbruger : Int) : List[LeveringsAftale] = {
-    val leveringsPeriode = new Periode(new Date,new Date) //todo beregn
+    val leveringsPeriode = new Periode(Some(new Date),None) //todo beregn
     val properties = Map[Properties.Value,String]()
     var leveringsAftaler = List[LeveringsAftale]()
 

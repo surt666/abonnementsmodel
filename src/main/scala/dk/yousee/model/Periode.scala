@@ -9,4 +9,4 @@ import java.util.Date
  * Time: 6:42:01 PM
  */
 
-class Periode(val fra : Date, val til : Date)
+class Periode(val fra : Option[Date], val til : Option[Date])
