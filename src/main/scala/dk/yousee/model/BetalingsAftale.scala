@@ -8,13 +8,13 @@ package dk.yousee.model
  */
 
 class BetalingsAftale(val id : Int, val abonnementId : Int, val produktid : Int, val betaler : Int, val pris : Double,
-                      val rabat : Double, val faktureringsPeriode : Periode, val status : BetalingsAftaleStatus) {
+                      val rabat : Double, val faktureringsPeriode : Periode, val status : BetalingsAftaleStatus.Value) {
   def persist {
     //todo kald repository
     println("Persister BetalingsAftale for " + abonnementId)
   }
 }
 
-class BetalingsAftaleStatus extends Enumeration {
+object BetalingsAftaleStatus extends Enumeration {
   val Lukket,Bero,Aktiv = Value
 }

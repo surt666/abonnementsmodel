@@ -3,7 +3,7 @@ package dk.yousee.contexts
 import java.util.Date
 import dk.yousee.repository.Properties
 import dk.yousee.utilities.LeveringsAftaleUtility
-import dk.yousee.model.{BetalingsAftale, LeveringsAftale, Periode, Abonnement}
+import dk.yousee.model._
 
 /**
  * Created by IntelliJ IDEA.
@@ -14,9 +14,9 @@ import dk.yousee.model.{BetalingsAftale, LeveringsAftale, Periode, Abonnement}
 
 class SletAbonnement(val abonId : Int, val date : Date) {
   //todo find abonnement for abonid via Repository
-  val abon = new Abonnement(3,123,List[LeveringsAftale](),List[BetalingsAftale]())
+  val abon = new Abonnement(3,123,List[LeveringsAftale](),List[BetalingsAftale](), AbonnementStatus.Aktiv)
   //val faktururingsPeriode = new Periode(abon.faktureringsPeriode.fra,date)
-  val abon2 = new Abonnement(abon.id,abon.juridisk,abon.leveringsAftaler,abon.betalingsAftaler)
+  val abon2 = new Abonnement(abon.id,abon.juridisk,abon.leveringsAftaler,abon.betalingsAftaler,AbonnementStatus.Lukket)
   abon2.persist
   for (l <- abon2.leveringsAftaler) {
     if (l.properties.keySet.contains(Properties.ProvNum)) {

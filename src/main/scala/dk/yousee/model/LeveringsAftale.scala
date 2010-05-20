@@ -10,13 +10,13 @@ import scala.collection.mutable.Map
 import dk.yousee.repository.Properties
 
 class LeveringsAftale(val id : Int, val abonnementId : Int, val produktId : Int, val leveringsPeriode : Periode, val forbruger : Int,
-                      val properties : Map[Properties.Value,String], val status : LeveringsAftaleStatus, val installationsId : Int, val opgraderFraLeveringsAftaleId : Int) {
+                      val properties : Map[Properties.Value,String], val status : LeveringsAftaleStatus.Value, val installationsId : Int, val opgraderFraLeveringsAftaleId : Option[Int]) {
   def persist {
     //todo kald repository
     println("Persister LeveringsAftale for " + produktId)
   }
 }
 
-class LeveringsAftaleStatus extends Enumeration {
+object LeveringsAftaleStatus extends Enumeration {
   val Lukket,Bero,Aktiv = Value
 }

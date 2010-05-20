@@ -2,6 +2,7 @@ package dk.yousee.contexts
 
 import org.scalatest.FlatSpec
 import org.scalatest.matchers.ShouldMatchers
+import dk.yousee.model.AbonnementStatus
 
 /**
  * Created by IntelliJ IDEA.
@@ -13,14 +14,14 @@ import org.scalatest.matchers.ShouldMatchers
 class TestOpretAbonnement extends FlatSpec with ShouldMatchers {
 
   "Create YouSee Plus subscription" should "create 3 deliveries and 1 subscription" in {
-    val abon = new OpretAbonnement(1,123,234,456,1203101)
+    val abon = new OpretAbonnement(1,123,234,456,1203101,123456)
     abon.abonnement.id should equal (1)
-    abon.abonnement.leveringsAftaler.length should equal (3)
+    abon.abonnement.leveringsAftaler.length should equal (2)
   }
 
   "Create YouSee Silver subscription" should "create 5 deliveries and 1 subscription" in {
-    val abon = new OpretAbonnement(2,123,234,456,1701001)
+    val abon = new OpretAbonnement(2,123,234,456,1701001,123456)
     abon.abonnement.id should equal (2)
-    abon.abonnement.leveringsAftaler.length should equal (5)
+    abon.abonnement.leveringsAftaler.length should equal (4)
   }
 }
