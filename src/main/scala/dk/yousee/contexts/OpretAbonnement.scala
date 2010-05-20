@@ -16,8 +16,9 @@ class OpretAbonnement(abonId : Int, juridisk : Int, betaler : Int, forbruger : I
   //find ud af om produkt er bundle og opret tilsvarende Leverings aftaler
   val produkt = ProduktRepo.findProdukt(produktId)
   val leveringsAftaler = LeveringsAftaleUtility.findAlleLeveringsAftaler(produkt,abonId,forbruger,installationsId)
+  val betalingsAftaler = List[BetalingsAftale]() //todo find betalingsAftaler
   val faktureringsPeriode = new Periode(Some(new Date), Some(new Date)) //todo beregn
-  val abonnement = new Abonnement(abonId,juridisk,leveringsAftaler,List[BetalingsAftale](), AbonnementStatus.Aktiv)
+  val abonnement = new Abonnement(abonId,juridisk,leveringsAftaler,betalingsAftaler, AbonnementStatus.Aktiv)
   leveringsAftaler.foreach(l => l.persist)
   abonnement.persist
 }

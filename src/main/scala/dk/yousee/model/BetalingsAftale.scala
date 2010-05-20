@@ -7,7 +7,7 @@ package dk.yousee.model
  * Time: 4:52:22 PM
  */
 
-class BetalingsAftale(val id : Int, val abonnementId : Int, val produktid : Int, val betaler : Int, val pris : Double,
+class BetalingsAftale(val id : Int, val abonnementId : Int, val produktId : Int, val betaler : Int, val pris : Double,
                       val rabat : Double, val faktureringsPeriode : Periode, val status : BetalingsAftaleStatus.Value) {
   def persist {
     //todo kald repository

@@ -85,6 +85,6 @@ object LeveringsAftaleUtility {
   }
 
   def cloneWithProvisonering(l : LeveringsAftale) : LeveringsAftale with Provisionering = {
-    new LeveringsAftale(l.id,l.abonnementId,l.produktId,l.leveringsPeriode,l.forbruger,l.properties,l.status,l.installationsId,l.opgraderFraLeveringsAftaleId) with Provisionering
+    new LeveringsAftale(l.id,l.abonnementId,l.produktId,l.leveringsPeriode,l.forbruger,l.properties,l.status,l.installationsId,l.opgraderLeveringsAftaleId) with Provisionering
   }
 }
